@@ -1,0 +1,18 @@
+# Generating the mean image of training data
+@/caffe/build/tools
+./compute_image_mean -backend=lmdb ~/deep_learning_caffe/input/train_lmdb/ ~/deep_learning_caffe/input/mean.binaryproto
+
+# Print the model architecture by executing the command below
+python ~/caffe/python/draw_net.py ~/deep_learning_caffe/caffe_models/caffe_model_1/caffenet_train_val_1.prototxt ~/deep_learning_caffe/caffe_models/caffe_model_1/caffe_model_1.png
+
+# Model Training
+@/caffe/build/tools
+./caffe train --solver ~/deep_learning_caffe/caffe_models/caffe_model_1/solver_1.prototxt 2>&1 | tee ~/deep_learning_caffe/caffe_models/caffe_model_1/model_1_train.log
+
+# To plot learning curve
+python ~/deep_learning_caffe/pycode/plot_learning_curve.py ~/deep_learning_caffe/caffe_models/caffe_model_1/model_1_train.log ~/deep_learning_caffe/caffe_models/caffe_model_1/caffe_model_1_learning_curve.png
+
+
+# Make prediction
+$ python make_predictions_1.py ~/deep_learning_caffe/input/ ~/deep_learning_caffe/caffe_models/caffe_model_1/ ~/deep_learning_caffe/input/test1/
+
