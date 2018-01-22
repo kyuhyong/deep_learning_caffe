@@ -1,12 +1,15 @@
 '''
 Title           :make_predictions_1.py
 Description     :This script makes predictions using the 1st trained model and generates a submission file.
-Author          :Adil Moujahid
+Author          :Adil Moujahid, Kyuhyong You
 Date Created    :20160623
-Date Modified   :20160625
-version         :0.2
+Date Modified   :20180122
+version         :0.3
 usage           :python make_predictions_1.py
 python_version  :2.7.11
+Input arguments :[1] Path to input which contains mean binary image 
+                 [2] Path to trained caffe model
+                 [3] Path to test folder where unseen images are located (target files)
 '''
 
 import os
