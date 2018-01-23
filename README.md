@@ -62,9 +62,15 @@ python ~/deep_learning_caffe/pycode/plot_learning_curve.py ~/deep_learning_caffe
 
 To predict image classifiction from test images, run python script as follows
 ```sh
-python make_predictions_1.py ~/deep_learning_caffe/input/ ~/deep_learning_caffe/caffe_models/caffe_model_1/ ~/deep_learning_caffe/input/test1/
+$ python make_predictions_1.py --mean ~/deep_learning_caffe/input/mean.binaryproto --prototxt ~/deep_learning_caffe/caffe_models/caffe_model_1/caffenet_deploy_1.prototxt --model ~/deep_learning_caffe/caffe_models/caffe_model_1/caffe_model_1_iter_10000.caffemodel --test ~/deep_learning_caffe/input/test1/
 ```
 This will create a folder named predict under test folder and put classified images in a seperate folders. 
+
+To run realtime image classification with onboard camera, run python script as folows
+```sh
+$ python rt_classification.py --mean ~/deep_learning_caffe/input/mean.binaryproto --prototxt ~/deep_learning_caffe/caffe_models/caffe_model_1/caffenet_deploy_1.prototxt  --model ~/deep_learning_caffe/caffe_models/caffe_model_1/caffe_model_1_iter_10000.caffemodel
+
+```
 
 For any request or feedback, send an email to kyuhyong [at] gmail [dot] com
 Thank you.

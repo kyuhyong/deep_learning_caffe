@@ -3,18 +3,20 @@ Title           :make_predictions_1.py
 Description     :This script makes predictions using the 1st trained model and generates a submission file.
 Author          :Adil Moujahid, Kyuhyong You
 Date Created    :20160623
-Date Modified   :20180122
+Date Modified   :20180123
 version         :0.3
 usage           :python make_predictions_1.py
 python_version  :2.7.11
-Input arguments :[1] Path to input which contains mean binary image 
-                 [2] Path to trained caffe model
-                 [3] Path to test folder where unseen images are located (target files)
+Input arguments :--mean  Path to input which contains mean binary image 
+                 --prototxt Path to Caffe 'deploy' prototxt file
+                 --model path to Caffe pre-trained model
+                 --test  Path to test folder where unseen images are located (target files)
 '''
 
 import os
 import sys
 import shutil
+import argparse
 import glob
 import cv2
 import caffe
@@ -44,35 +46,30 @@ def transform_img(img, img_width=IMAGE_WIDTH, img_height=IMAGE_HEIGHT):
 
     return img
 
-
+# construct the argument parse and parse the arguments
+parser = argparse.ArgumentParser()
+parser.add_argument( "-b", "--mean", required=True,
+	help="path to mean binary image")
+parser.add_argument("-p", "--prototxt", required=True,
+	help="path to Caffe 'deploy' prototxt file")
+parser.add_argument("-m", "--model", required=True,
+	help="path to Caffe pre-trained model")
+parser.add_argument("-t", "--test", required=True,
+	help="path to test images")
+args = parser.parse_args()
 '''
 Reading mean image, caffe model and its weights 
 '''
 #Read mean image
 mean_blob = caffe_pb2.BlobProto()
-inputPath = sys.argv[1]
-sys.path.insert(1, inputPath)
-meanBinary = inputPath + 'mean.binaryproto'
-if not os.path.exists(meanBinary):
-    print "Mean binary file not exist."
-    sys.exit(0)
-with open(meanBinary) as f:
+with open(args.mean) as f:
     mean_blob.ParseFromString(f.read())
 mean_array = np.asarray(mean_blob.data, dtype=np.float32).reshape(
     (mean_blob.channels, mean_blob.height, mean_blob.width))
-modelPath = sys.argv[2]
-sys.path.insert(1, modelPath)
-caffeProto = modelPath + 'caffenet_deploy_1.prototxt'
-if not os.path.exists(caffeProto):
-   print "Prototxt file not exist"
-   sys.exit(0)
-caffeModel = modelPath + 'caffe_model_1_iter_10000.caffemodel'
-if not os.path.exists(caffeModel):
-   print "Caffe model not exists"
-   sys.exit(0)
+
 #Read model architecture and trained model's weights
-net = caffe.Net(caffeProto,
-                caffeModel,
+net = caffe.Net(args.prototxt,
+                args.model,
                 caffe.TEST)
 
 #Define image transformers
@@ -83,7 +80,7 @@ transformer.set_transpose('data', (2,0,1))
 '''
 Making predicitions
 '''
-testPath = sys.argv[3]
+testPath = args.test
 sys.path.insert(1, testPath)
 #Reading image paths
 test_img_paths = [img_path for img_path in glob.glob(testPath+"/*jpg")]
@@ -121,7 +118,7 @@ for img_path in test_img_paths:
 '''
 Making submission file
 '''
-with open(modelPath +"submission_model_1.csv","w") as f:
+with open(predPath +"/submission_model_1.csv","w") as f:
     f.write("id,label\n")
     for i in range(len(test_ids)):
         f.write(str(test_ids[i])+","+str(preds[i])+"\n")

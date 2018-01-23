@@ -19,6 +19,7 @@ from caffe.proto import caffe_pb2
 #Size of images
 IMAGE_WIDTH = 227
 IMAGE_HEIGHT = 227
+
 def transform_img(img, img_width=IMAGE_WIDTH, img_height=IMAGE_HEIGHT):
 
     #Histogram Equalization
@@ -48,17 +49,17 @@ with open(args.mean) as f:
     mean_blob.ParseFromString(f.read())
 mean_array = np.asarray(mean_blob.data, dtype=np.float32).reshape(
     (mean_blob.channels, mean_blob.height, mean_blob.width))
-caffeProto = args.prototxt
-caffeModel = args.model
+
 #Read model architecture and trained model's weights
-net = caffe.Net(caffeProto,
-                caffeModel,
+net = caffe.Net(args.prototxt,
+                args.model,
                 caffe.TEST)
-cap = cv2.VideoCapture(0)
 #Define image transformers
 transformer = caffe.io.Transformer({'data': net.blobs['data'].data.shape})
 transformer.set_mean('data', mean_array)
 transformer.set_transpose('data', (2,0,1))
+#Start capture video from Camera
+cap = cv2.VideoCapture(0)
 while(True):
     # Capture frame-by-frame
     ret, frame = cap.read()
