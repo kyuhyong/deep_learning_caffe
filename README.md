@@ -58,7 +58,7 @@ To print learning curve to see how well our model trained, run python script in 
 ```
 python ~/deep_learning_caffe/pycode/plot_learning_curve.py ~/deep_learning_caffe/caffe_models/caffe_model_1/model_1_train.log ~/deep_learning_caffe/caffe_models/caffe_model_1/caffe_model_1_learning_curve.png
 ```
-![alt text] (http://cfile22.uf.tistory.com/image/99705D4C5A60DB7805059D "Learning curve")
+![alt text] (http://cfile22.uf.tistory.com/original/99705D4C5A60DB7805059D#jpg "Learning curve")
 
 To predict image classifiction from test images, run python script as follows
 ```sh
