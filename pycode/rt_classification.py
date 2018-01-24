@@ -3,7 +3,7 @@ Title           :rt_classification.py
 Description     :This script runs realtime image classification with caffe models
 Author          :Kyuhyong
 Date Created    :20180123
-Date Modified   :20180123
+Date Modified   :20180124
 version         :0.1
 usage           :
 python_version  :2.7.11
@@ -16,9 +16,16 @@ import cv2
 import caffe
 from caffe.proto import caffe_pb2
 
-#Size of images
+# Size of images
 IMAGE_WIDTH = 227
 IMAGE_HEIGHT = 227
+
+# Write some Text
+font                   = cv2.FONT_HERSHEY_SIMPLEX
+bottomLeftCornerOfText = (10,400)
+fontScale              = 0.8
+fontColor              = (255,255,255)
+lineType               = 2
 
 def transform_img(img, img_width=IMAGE_WIDTH, img_height=IMAGE_HEIGHT):
 
@@ -69,10 +76,18 @@ while(True):
     pred_probas = out['prob']
     argmax = pred_probas.argmax()
     if argmax == 1:
-        print 'Looks like DOG with Probability of {:0.2f}'.format(pred_probas[0][1])
+        scr_msg = 'Looks like DOG with Probability of {:0.2f}'.format(pred_probas[0][1])
     else:
-        print 'Looks like CAT with Probability of {:0.2f}'.format(pred_probas[0][0])
-    print 
+        scr_msg = 'Looks like CAT with Probability of {:0.2f}'.format(pred_probas[0][0])
+    # Set Display message
+    img_H, img_W = frame.shape[:2]
+    bottomLeftCornerOfText = (int(img_W * 0.05), int(img_H * 0.9))
+    cv2.putText(frame, scr_msg, 
+        bottomLeftCornerOfText, 
+        font, 
+        fontScale,
+        fontColor,
+        lineType)
     # Display the resulting frame
     cv2.imshow('frame',frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
