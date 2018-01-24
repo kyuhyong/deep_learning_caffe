@@ -24,7 +24,7 @@ IMAGE_HEIGHT = 227
 font                   = cv2.FONT_HERSHEY_SIMPLEX
 bottomLeftCornerOfText = (10,400)
 fontScale              = 0.8
-fontColor              = (255,255,255)
+fontColor              = (0,0,0)
 lineType               = 2
 
 def transform_img(img, img_width=IMAGE_WIDTH, img_height=IMAGE_HEIGHT):
@@ -81,7 +81,8 @@ while(True):
         scr_msg = 'Looks like CAT with Probability of {:0.2f}'.format(pred_probas[0][0])
     # Set Display message
     img_H, img_W = frame.shape[:2]
-    bottomLeftCornerOfText = (int(img_W * 0.05), int(img_H * 0.9))
+    cv2.rectangle(frame, (0,int(img_H*0.9)), (img_W, img_H), (255,255,255), -1)
+    bottomLeftCornerOfText = (int(img_W * 0.05), int(img_H * 0.96))
     cv2.putText(frame, scr_msg, 
         bottomLeftCornerOfText, 
         font, 
