@@ -66,10 +66,14 @@ with in_db.begin(write=True) as in_txn:
 		continue
 	img = cv2.imread(img_path, cv2.IMREAD_COLOR)
 	img = transform_img(img, img_width=IMAGE_WIDTH, img_height=IMAGE_HEIGHT)
-	if 'cat' in img_path:
+	if 'moveCenter' in img_path:
 	    label = 0
+        elif 'moveLeft' in img_path:
+            label = 1
+        elif 'moveRight' in img_path:
+            label = 2
 	else:
-	    label = 1
+	    label = 3
 	datum = make_datum(img, label)
 	in_txn.put('{:0>5d}'.format(in_idx), datum.SerializeToString())
 	print '{:d} of {:d}|'.format(in_idx,dataNum) + os.path.basename(os.path.dirname(img_path)) + "/"+ os.path.basename(img_path) + ' as {:d}'.format(label),"          \r",
@@ -85,10 +89,14 @@ with in_db.begin(write=True) as in_txn:
 		continue
 	img = cv2.imread(img_path, cv2.IMREAD_COLOR)
 	img = transform_img(img, img_width=IMAGE_WIDTH, img_height=IMAGE_HEIGHT)
-	if 'cat' in img_path:
+	if 'moveCenter' in img_path:
 	    label = 0
+        elif 'moveLeft' in img_path:
+            label = 1
+        elif 'moveRight' in img_path:
+            label = 2
 	else:
-	    label = 1
+	    label = 3
 	datum = make_datum(img, label)
 	in_txn.put('{:0>5d}'.format(in_idx), datum.SerializeToString())
 	print '{:d} of {:d} @'.format(in_idx, dataNum) + os.path.basename(os.path.dirname(img_path)) + "/"+ os.path.basename(img_path) + ' as {:d}'.format(label),"             \r",
