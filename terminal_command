@@ -22,3 +22,13 @@ $ python make_predictions_1.py --mean ~/deep_learning_caffe/input/mean.binarypro
 
 # Run realtime classification with onboard CAM
 $ python rt_classification.py --mean ~/deep_learning_caffe/input/mean.binaryproto --prototxt ~/deep_learning_caffe/caffe_models/caffe_model_1/caffenet_deploy_1.prototxt  --model ~/deep_learning_caffe/caffe_models/caffe_model_1/caffe_model_1_iter_10000.caffemodel 
+
+# To run ROS nodes
+roscore
+
+rosrun joy joy_node
+
+rosrun my_classifier classifier.py --mean ~/deep_learning_caffe/input/mean.binaryproto --prototxt ~/deep_learning_caffe/caffe_models/caffe_model_1/caffenet_deploy_1.prototxt --model ~/deep_learning_caffe/caffe_models/caffe_model_1/caffe_model_1_iter_3000.caffemodel
+
+rosrun myjoy joycon.py 
+
